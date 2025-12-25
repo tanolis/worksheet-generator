@@ -1,4 +1,4 @@
-baseURL = "https://tanolis.github.io/worksheet-generator/"
+baseURL = "https://tanolis.github.io/worksheet-generator/public/"
 languageCode = "en-us"
 title = "Worksheet Generator"
 # theme = "none"

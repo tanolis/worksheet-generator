@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Worksheet Generator</title>
-    <link>https://tanolis.github.io/worksheet-generator/tags/</link>
+    <link>https://tanolis.github.io/worksheet-generator/public/tags/</link>
     <description>Recent content in Tags on Worksheet Generator</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="https://tanolis.github.io/worksheet-generator/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tanolis.github.io/worksheet-generator/public/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -1,0 +1,412 @@
+cd ~\Documents\worksheet-generator
+
+# Create addition template file
+@'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - Worksheet Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EF476F;
+            --secondary: #118AB2;
+            --accent: #FFD166;
+            --success: #06D6A0;
+            --dark: #073B4C;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: #FFF5F7; color: var(--dark); }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), #FF8FA3);
+            color: white;
+            padding: 1.5rem 0;
+            border-bottom: 5px solid var(--accent);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 { font-family: 'Comic Neue', cursive; font-size: 2rem; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: 600; }
+        
+        /* Main Content */
+        .main-content { padding: 3rem 0; }
+        
+        .page-header {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(239, 71, 111, 0.1);
+            border: 3px dashed var(--accent);
+        }
+        
+        .page-header h1 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Generator */
+        .generator-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .generator-container { grid-template-columns: 1fr; }
+        }
+        
+        .settings-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 3px solid var(--secondary);
+        }
+        
+        .setting-group { margin-bottom: 25px; }
+        .setting-group h3 { color: var(--secondary); margin-bottom: 15px; }
+        
+        .option-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: #F0F7FF;
+            border: 2px solid #E0E7FF;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .option-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        /* Worksheet Display */
+        .worksheet-display {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 3px solid var(--primary);
+        }
+        
+        .worksheet-title {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px dotted var(--accent);
+        }
+        
+        .worksheet-title h2 {
+            font-family: 'Comic Neue', cursive;
+            color: var(--primary);
+            font-size: 2.2rem;
+        }
+        
+        .addition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .addition-problem {
+            background: #FFF9F0;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            text-align: center;
+            border-left: 5px solid var(--success);
+        }
+        
+        .problem-number {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .generate-btn { background: var(--primary); color: white; }
+        .print-btn { background: var(--secondary); color: white; }
+        .back-btn { background: var(--dark); color: white; }
+        
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        @media print {
+            .no-print { display: none !important; }
+            .addition-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="no-print">
+        <div class="container header-container">
+            <div class="logo">
+                <h1><i class="fas fa-plus-circle"></i> {{ .Title }}</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/numbers-1-10/">🔢 Counting</a>
+                <a href="/subtraction-single-digit/">➖ Subtraction</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header no-print">
+                <h1><i class="fas fa-calculator"></i> Single Digit Addition Generator</h1>
+                <p>Create custom addition worksheets with numbers 0-9. Perfect for beginners!</p>
+            </div>
+
+            <div class="generator-container">
+                <div class="settings-panel no-print">
+                    <h2><i class="fas fa-sliders-h"></i> Worksheet Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-list-ol"></i> Number of Problems</h3>
+                        <button class="option-btn active" onclick="setProblems(10)">10 Problems</button>
+                        <button class="option-btn" onclick="setProblems(15)">15 Problems</button>
+                        <button class="option-btn" onclick="setProblems(20)">20 Problems</button>
+                        <button class="option-btn" onclick="setProblems(25)">25 Problems</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-chart-line"></i> Difficulty Level</h3>
+                        <button class="option-btn active" onclick="setDifficulty('easy')">Easy (0-5)</button>
+                        <button class="option-btn" onclick="setDifficulty('medium')">Medium (0-9)</button>
+                        <button class="option-btn" onclick="setDifficulty('hard')">Hard (Mixed)</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-th-large"></i> Problem Type</h3>
+                        <button class="option-btn active" onclick="setType('horizontal')">Horizontal</button>
+                        <button class="option-btn" onclick="setType('vertical')">Vertical</button>
+                        <button class="option-btn" onclick="setType('word')">Word Problems</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-check-circle"></i> Options</h3>
+                        <label style="display:block; margin:10px 0;">
+                            <input type="checkbox" id="includeAnswers" checked> Include Answer Key
+                        </label>
+                        <label style="display:block; margin:10px 0;">
+                            <input type="checkbox" id="showHelpers" checked> Show Counting Helpers
+                        </label>
+                    </div>
+                </div>
+
+                <div class="worksheet-display">
+                    <div class="worksheet-title">
+                        <h2>Single Digit Addition Practice</h2>
+                        <p>Name: __________________ Date: _______________</p>
+                    </div>
+                    
+                    <div class="addition-grid" id="problemsContainer">
+                        <!-- Problems will be generated here -->
+                    </div>
+                    
+                    <div id="answerKey" style="margin-top:40px; padding:20px; background:#E8F7F6; border-radius:10px; display:none;">
+                        <h3><i class="fas fa-key"></i> Answer Key</h3>
+                        <div id="answersContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons no-print">
+                <button class="action-btn generate-btn" onclick="generateWorksheet()">
+                    <i class="fas fa-magic"></i> Generate New Worksheet
+                </button>
+                <button class="action-btn print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Worksheet
+                </button>
+                <a href="/" class="action-btn back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="no-print">
+        <div class="container">
+            <p style="text-align:center;">© 2023 Worksheet Generator - Making Math Fun!</p>
+        </div>
+    </footer>
+
+    <script>
+        let settings = {
+            problems: 10,
+            difficulty: 'easy',
+            type: 'horizontal',
+            includeAnswers: true,
+            showHelpers: true
+        };
+        
+        function setProblems(num) {
+            document.querySelectorAll('[onclick^="setProblems"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.problems = num;
+            generateWorksheet();
+        }
+        
+        function setDifficulty(level) {
+            document.querySelectorAll('[onclick^="setDifficulty"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.difficulty = level;
+            generateWorksheet();
+        }
+        
+        function setType(type) {
+            document.querySelectorAll('[onclick^="setType"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.type = type;
+            generateWorksheet();
+        }
+        
+        function generateWorksheet() {
+            const container = document.getElementById('problemsContainer');
+            const answerContainer = document.getElementById('answersContainer');
+            const answerKey = document.getElementById('answerKey');
+            
+            container.innerHTML = '';
+            answerContainer.innerHTML = '';
+            
+            // Update options
+            settings.includeAnswers = document.getElementById('includeAnswers').checked;
+            settings.showHelpers = document.getElementById('showHelpers').checked;
+            
+            // Generate problems
+            for (let i = 1; i <= settings.problems; i++) {
+                let num1, num2;
+                
+                switch(settings.difficulty) {
+                    case 'easy':
+                        num1 = Math.floor(Math.random() * 6);
+                        num2 = Math.floor(Math.random() * 6);
+                        break;
+                    case 'medium':
+                        num1 = Math.floor(Math.random() * 10);
+                        num2 = Math.floor(Math.random() * 10);
+                        break;
+                    case 'hard':
+                        num1 = Math.floor(Math.random() * 10);
+                        num2 = Math.floor(Math.random() * (10 - num1));
+                        break;
+                }
+                
+                const sum = num1 + num2;
+                let problemHTML = '';
+                
+                switch(settings.type) {
+                    case 'horizontal':
+                        problemHTML = `${num1} + ${num2} = ______`;
+                        break;
+                    case 'vertical':
+                        problemHTML = `
+                            <div style="text-align:center;">
+                                <div>${num1}</div>
+                                <div>+ ${num2}</div>
+                                <div style="border-top:2px solid #333; padding-top:5px;">______</div>
+                            </div>
+                        `;
+                        break;
+                    case 'word':
+                        const objects = ['🍎', '🍕', '🎈', '🐱', '🚗', '🌟', '⚽', '🎨'];
+                        const obj = objects[Math.floor(Math.random() * objects.length)];
+                        problemHTML = `You have ${num1} ${obj}. You get ${num2} more. How many total? ______`;
+                        break;
+                }
+                
+                if (settings.showHelpers && settings.type !== 'vertical') {
+                    problemHTML += ` <span style="color:#888; font-size:0.9em;">(${obj ? obj.repeat(num1) + ' + ' + obj.repeat(num2) : 'Count: ' + num1 + ' + ' + num2})</span>`;
+                }
+                
+                container.innerHTML += `
+                    <div class="addition-problem">
+                        <span class="problem-number">${i}</span>
+                        ${problemHTML}
+                    </div>
+                `;
+                
+                // Add to answer key
+                if (settings.includeAnswers) {
+                    answerContainer.innerHTML += `
+                        <div style="margin:5px 0; padding:8px; background:white; border-radius:5px;">
+                            ${i}. ${num1} + ${num2} = <strong>${sum}</strong>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Show/hide answer key
+            answerKey.style.display = settings.includeAnswers ? 'block' : 'none';
+            
+            // Show success message
+            if (!window.printing) {
+                alert(`✅ Generated ${settings.problems} addition problems!`);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', generateWorksheet);
+        
+        // Update on checkbox change
+        document.getElementById('includeAnswers').addEventListener('change', generateWorksheet);
+        document.getElementById('showHelpers').addEventListener('change', generateWorksheet);
+    </script>
+</body>
+</html>
+'@ | Out-File "layouts\addition\single.html" -Encoding UTF8

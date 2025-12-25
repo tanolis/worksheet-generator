@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - Worksheet Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #118AB2;
+            --secondary: #EF476F;
+            --accent: #FFD166;
+            --light: #E8F4F8;
+            --dark: #073B4C;
+            --success: #06D6A0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #F0F9FF;
+            min-height: 100vh;
+            background-image: radial-gradient(#118AB2 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), #06B6D4);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(17, 138, 178, 0.2);
+            border-bottom: 5px solid var(--accent);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+        
+        .logo-text h1 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(17, 138, 178, 0.1);
+            border: 3px dashed var(--primary);
+        }
+        
+        .page-header h1 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Worksheet Content */
+        .worksheet-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .worksheet-title {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .worksheet-title h2 {
+            font-family: 'Comic Neue', cursive;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .activity-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .activity-card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(17, 138, 178, 0.2);
+        }
+        
+        .activity-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .activity-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .worksheet-preview {
+            background: #FFF9F0;
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px dashed var(--accent);
+            margin-top: 40px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .preview-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .generate-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .problem-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .problem-number {
+            background: var(--accent);
+            color: var(--dark);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .download-btn {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .back-btn {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .activity-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-abacus"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Worksheet Generator</h1>
+                    <p>Numbers 10-100 Mastery</p>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/numbers-1-10/">🔢 1-10</a>
+                <a href="#math">➕ Math</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>{{ .Title }}</h1>
+                <p>Practice counting, writing, and comparing numbers from 10 to 100. Perfect for building number sense!</p>
+            </div>
+
+            <!-- Activity Types -->
+            <div class="activity-types">
+                <div class="activity-card" onclick="generateWorksheet('counting')">
+                    <div class="activity-icon">
+                        <i class="fas fa-sort-numeric-up-alt"></i>
+                    </div>
+                    <h3>Counting Practice</h3>
+                    <p>Count forward and backward between 10-100</p>
+                </div>
+                
+                <div class="activity-card" onclick="generateWorksheet('writing')">
+                    <div class="activity-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <h3>Number Writing</h3>
+                    <p>Write numbers in digits and words</p>
+                </div>
+                
+                <div class="activity-card" onclick="generateWorksheet('comparing')">
+                    <div class="activity-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>Comparing Numbers</h3>
+                    <p>Use >, <, = to compare numbers</p>
+                </div>
+                
+                <div class="activity-card" onclick="generateWorksheet('ordering')">
+                    <div class="activity-icon">
+                        <i class="fas fa-sort-amount-up"></i>
+                    </div>
+                    <h3>Ordering Numbers</h3>
+                    <p>Arrange numbers from smallest to largest</p>
+                </div>
+            </div>
+
+            <!-- Worksheet Preview -->
+            <div class="worksheet-container">
+                <div class="worksheet-title">
+                    <h2>Numbers 10-100 Practice Worksheet</h2>
+                    <p>Name: __________________ Date: _______________</p>
+                </div>
+                
+                <div class="worksheet-preview">
+                    <div class="preview-header">
+                        <h3>Worksheet Preview</h3>
+                        <button class="generate-btn" onclick="generateWorksheet('counting')">
+                            <i class="fas fa-redo"></i> Generate New
+                        </button>
+                    </div>
+                    
+                    <div class="problems-grid" id="problemsContainer">
+                        <!-- Problems will be generated here -->
+                        <div class="problem-box">
+                            <span class="problem-number">1</span>
+                            Count from 10 to 20: ________________
+                        </div>
+                        <div class="problem-box">
+                            <span class="problem-number">2</span>
+                            Write 25 in words: ________________
+                        </div>
+                        <div class="problem-box">
+                            <span class="problem-number">3</span>
+                            Compare: 45 ___ 54
+                        </div>
+                        <div class="problem-box">
+                            <span class="problem-number">4</span>
+                            What comes after 67? ________________
+                        </div>
+                        <div class="problem-box">
+                            <span class="problem-number">5</span>
+                            Order: 32, 23, 45 → _______________
+                        </div>
+                        <div class="problem-box">
+                            <span class="problem-number">6</span>
+                            Skip count by 10s: 10, 20, ___, ___
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Worksheet
+                </button>
+                <button class="action-btn download-btn" onclick="downloadPDF()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <a href="/" class="action-btn back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>© 2023 Worksheet Generator. Mastering Numbers 10-100!</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function generateWorksheet(type) {
+            const container = document.getElementById('problemsContainer');
+            let problems = [];
+            
+            switch(type) {
+                case 'counting':
+                    problems = [
+                        "Count from 10 to 20: ________________",
+                        "Count backward from 100 to 90: ________________",
+                        "Skip count by 5s from 10: 10, 15, ___, ___, ___",
+                        "Skip count by 10s from 20: 20, 30, ___, ___, ___",
+                        "What number comes after 47? ________________",
+                        "What number comes before 63? ________________"
+                    ];
+                    break;
+                    
+                case 'writing':
+                    const numbers = [15, 28, 36, 42, 57, 69, 74, 81, 93, 100];
+                    const words = ["fifteen", "twenty-eight", "thirty-six", "forty-two", 
+                                 "fifty-seven", "sixty-nine", "seventy-four", "eighty-one", 
+                                 "ninety-three", "one hundred"];
+                    problems = numbers.map((num, i) => 
+                        `Write ${words[i]} in digits: ________________`
+                    );
+                    break;
+                    
+                case 'comparing':
+                    problems = [
+                        "Compare: 34 ___ 43",
+                        "Compare: 56 ___ 56",
+                        "Compare: 78 ___ 87",
+                        "Compare: 91 ___ 19",
+                        "Compare: 25 ___ 52",
+                        "Compare: 67 ___ 76"
+                    ];
+                    break;
+                    
+                case 'ordering':
+                    problems = [
+                        "Order from smallest to largest: 45, 23, 67 → _______________",
+                        "Order from largest to smallest: 89, 34, 56 → _______________",
+                        "Order: 12, 78, 45, 23 → ____________________",
+                        "Order: 91, 19, 55, 82 → ____________________",
+                        "Find the missing number: 10, 20, ___, 40, 50",
+                        "Find the pattern: 30, 40, 50, ___, ___"
+                    ];
+                    break;
+            }
+            
+            // Generate problem boxes
+            let html = '';
+            problems.forEach((problem, index) => {
+                html += `
+                    <div class="problem-box">
+                        <span class="problem-number">${index + 1}</span>
+                        ${problem}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Show success message
+            alert(`✅ Generated new ${type} worksheet with ${problems.length} problems!`);
+        }
+        
+        function downloadPDF() {
+            alert('📥 PDF download started for Numbers 10-100 worksheet!\n\nIn a real app, this would generate a PDF with:\n• 15 problems\n• Answer key\n• Student name/date fields\n• Colorful design');
+        }
+        
+        // Initialize with counting worksheet
+        document.addEventListener('DOMContentLoaded', function() {
+            generateWorksheet('counting');
+        });
+    </script>
+</body>
+</html>

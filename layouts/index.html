@@ -1,0 +1,1082 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worksheet Generator - Free Math & English Worksheets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ff9e00;
+            --math-color: #4361ee;
+            --english-color: #f72585;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7ff;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #ffd166;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #555;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(247, 37, 133, 0.4);
+        }
+        
+        /* Categories Section */
+        .categories {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .category-type {
+            margin-bottom: 4rem;
+        }
+        
+        .type-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+        
+        .math-header {
+            border-color: var(--math-color);
+        }
+        
+        .english-header {
+            border-color: var(--english-color);
+        }
+        
+        .type-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+        
+        .math-icon {
+            color: var(--math-color);
+        }
+        
+        .english-icon {
+            color: var(--english-color);
+        }
+        
+        .type-header h3 {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-card h4 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-card h4 i {
+            margin-right: 10px;
+        }
+        
+        .subcategories {
+            list-style-type: none;
+        }
+        
+        .subcategories li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .subcategories li:last-child {
+            border-bottom: none;
+        }
+        
+        .subcategories li i {
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .subcategories a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s;
+            flex-grow: 1;
+        }
+        
+        .subcategories a:hover {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        /* Worksheet Generator Styles */
+        .generate-btn-small {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .generate-btn-small:hover {
+            background: #d1147d;
+            transform: translateY(-2px);
+        }
+        
+        .worksheet-panel {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+        
+        .worksheet-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .worksheet-panel h5 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .settings-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .setting {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .setting label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .setting select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .preview-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px dashed #ddd;
+            min-height: 150px;
+        }
+        
+        .preview-area h6 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .preview-content {
+            font-family: 'Courier New', monospace;
+            line-height: 1.8;
+        }
+        
+        .worksheet-problem {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .generate-btn, .print-btn, .download-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .generate-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .print-btn {
+            background: var(--success);
+            color: white;
+        }
+        
+        .download-btn {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .generate-btn:hover, .print-btn:hover, .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: #f0f5ff;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #ffd166;
+        }
+        
+        .footer-links a {
+            display: block;
+            color: #ddd;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--success);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+            }
+            
+            .nav-links a {
+                margin: 0 10px;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .generate-btn, .print-btn, .download-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Worksheet Generator</h1>
+                    <p>Free Math & English Practice Sheets</p>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="#math">Math</a>
+                <a href="#english">English</a>
+                <a href="#features">Features</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Create Custom Worksheets in Minutes</h2>
+            <p>Generate unlimited practice worksheets for Math and English. Perfect for teachers, parents, and students. Select a category below to get started!</p>
+            <a href="#math" class="cta-button">Start Creating Worksheets</a>
+        </div>
+    </section>
+
+    <!-- Math Categories -->
+    <section class="categories" id="math">
+        <div class="container">
+            <div class="section-title">
+                <h2>Math Worksheets</h2>
+                <p>Choose from our wide range of math topics. Each category includes multiple subcategories for targeted practice.</p>
+            </div>
+            
+            <div class="category-type">
+                <div class="type-header math-header">
+                    <div class="type-icon math-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Math Categories</h3>
+                </div>
+                
+                <div class="category-grid">
+                    <!-- Counting Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-sort-numeric-up"></i> Counting</h4>
+                        <ul class="subcategories">
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/numbers-1-10/" class="subcategory-link">Numbers 1-10</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/numbers-1-10/'">Generate</button>
+                            </li>
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/numbers-10-100/" class="subcategory-link">Numbers 10-100</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/numbers-10-100/'">Generate</button>
+                            </li>
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/counting-skip-2/" class="subcategory-link">Skip Counting by 2s</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/counting-skip-2/'">Generate</button>
+                            </li>
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/counting-skip-5/" class="subcategory-link">Skip Counting by 5s</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/counting-skip-5/'">Generate</button>
+                            </li>
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/counting-skip-10/" class="subcategory-link">Skip Counting by 10s</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/counting-skip-10/'">Generate</button>
+                            </li>
+                            <li>
+                                <i class="fas fa-chevron-right"></i> 
+                                <a href="/counting-backward/" class="subcategory-link">Backward Counting</a>
+                                <button class="generate-btn-small" onclick="window.location.href='/counting-backward/'">Generate</button>
+                            </li>
+                        </ul>
+                        
+                        <!-- Worksheet Generator Panel -->
+                        <div class="worksheet-panel" id="countingPanel">
+                            <h5>Worksheet Settings</h5>
+                            <div class="settings-group">
+                                <div class="setting">
+                                    <label>Number of Problems:</label>
+                                    <select id="problemCount">
+                                        <option value="5">5</option>
+                                        <option value="10" selected>10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                                <div class="setting">
+                                    <label>Difficulty:</label>
+                                    <select id="difficulty">
+                                        <option value="easy">Easy</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                                <div class="setting">
+                                    <label>
+                                        <input type="checkbox" id="includeAnswers" checked> Include Answer Key
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-area" id="countingPreview">
+                                <h6>Worksheet Preview</h6>
+                                <div class="preview-content" id="countingPreviewContent">
+                                    <p>Click "Generate" above to see a preview</p>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="generate-btn" id="generateCountingBtn">Generate Full Worksheet</button>
+                                <button class="print-btn" id="printCountingBtn">Print Worksheet</button>
+                                <button class="download-btn" id="downloadCountingBtn">Download PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Addition Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-plus"></i> Addition</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-single-digit/">Single Digit Addition</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-two-digit/">Two Digit Addition</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-three-digit/">Three Digit Addition</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-regrouping/">Addition with Regrouping</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-word-problems/">Word Problems</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/addition-missing-addends/">Missing Addends</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Subtraction Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-minus"></i> Subtraction</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Single Digit Subtraction</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Two Digit Subtraction</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Three Digit Subtraction</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Subtraction with Borrowing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Word Problems</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Missing Numbers</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Place Value Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-th-large"></i> Place Value</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Ones & Tens</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Hundreds, Tens & Ones</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Expanded Form</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Comparing Numbers</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Rounding Numbers</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Base Ten Blocks</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Time Category -->
+                    <div class="category-card">
+                        <h4><i class="far fa-clock"></i> Time</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Telling Time (Hour)</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Telling Time (Half Hour)</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Telling Time (Quarter Hour)</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Telling Time (5 Minutes)</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Elapsed Time</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">AM & PM</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Geometry Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-shapes"></i> Geometry</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Basic Shapes</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">3D Shapes</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Symmetry</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Perimeter</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Area</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Angles</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- English Categories -->
+    <section class="categories" id="english">
+        <div class="container">
+            <div class="section-title">
+                <h2>English Worksheets</h2>
+                <p>Practice grammar, vocabulary, reading, and writing skills with our English worksheet categories.</p>
+            </div>
+            
+            <div class="category-type">
+                <div class="type-header english-header">
+                    <div class="type-icon english-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>English Categories</h3>
+                </div>
+                
+                <div class="category-grid">
+                    <!-- Phonics Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-spell-check"></i> Phonics</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Beginning Sounds</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Ending Sounds</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Vowel Sounds</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Consonant Blends</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Digraphs</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Rhyming Words</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Grammar Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-file-alt"></i> Grammar</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Nouns & Pronouns</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Verbs & Tenses</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Adjectives & Adverbs</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Punctuation</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Sentences</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Prepositions</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Vocabulary Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-book"></i> Vocabulary</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Sight Words</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Word Families</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Synonyms & Antonyms</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Compound Words</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Context Clues</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Homophones</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Reading Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-book-reader"></i> Reading</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Reading Comprehension</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Story Sequencing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Main Idea</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Cause & Effect</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Predictions</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Character Analysis</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Writing Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-pen-fancy"></i> Writing</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Letter Formation</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Sentence Writing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Paragraph Writing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Creative Writing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Persuasive Writing</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Editing & Revising</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Spelling Category -->
+                    <div class="category-card">
+                        <h4><i class="fas fa-spell-check"></i> Spelling</h4>
+                        <ul class="subcategories">
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">CVC Words</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Long Vowel Words</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Irregular Words</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Word Patterns</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Spelling Rules</a></li>
+                            <li><i class="fas fa-chevron-right"></i> <a href="/numbers-1-10/">Dictation Practice</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Our Worksheet Generator?</h2>
+                <p>Our tool makes creating practice materials quick, easy, and effective.</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h4>Unlimited Worksheets</h4>
+                    <p>Generate as many worksheets as you need with our endless combinations of problems.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h4>Customizable</h4>
+                    <p>Adjust difficulty levels, number of problems, and focus areas to match your needs.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h4>Printable</h4>
+                    <p>All worksheets are designed for easy printing with clean, student-friendly layouts.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4>Curriculum-Aligned</h4>
+                    <p>Our content aligns with common educational standards for grades K-5.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Worksheet Generator</h4>
+                    <p>Free, customizable worksheets for Math and English practice. Perfect for teachers, parents, and homeschoolers.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="#math">Math Worksheets</a>
+                        <a href="#english">English Worksheets</a>
+                        <a href="#features">Features</a>
+                        <a href="/numbers-1-10/">How It Works</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-links">
+                        <a href="/numbers-1-10/">Feedback</a>
+                        <a href="/numbers-1-10/">Report an Issue</a>
+                        <a href="/numbers-1-10/">Suggest a Feature</a>
+                        <a href="/numbers-1-10/">Help Center</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Worksheet Generator. All rights reserved. | Made for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Worksheet Generator Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateButtons = document.querySelectorAll('.generate-btn-small');
+            const worksheetPanel = document.getElementById('countingPanel');
+            const previewContent = document.getElementById('countingPreviewContent');
+            const problemCountSelect = document.getElementById('problemCount');
+            const difficultySelect = document.getElementById('difficulty');
+            const includeAnswersCheckbox = document.getElementById('includeAnswers');
+            const generateFullBtn = document.getElementById('generateCountingBtn');
+            
+            // Show worksheet panel when any generate button is clicked
+            generateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const worksheetType = this.getAttribute('data-type');
+                    
+                    // Show the panel with animation
+                    worksheetPanel.classList.add('active');
+                    
+                    // Generate preview based on type
+                    generatePreview(worksheetType);
+                    
+                    // Scroll to the panel
+                    worksheetPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+            
+            // Generate preview function
+            function generatePreview(type) {
+                const problemCount = parseInt(problemCountSelect.value);
+                const difficulty = difficultySelect.value;
+                const includeAnswers = includeAnswersCheckbox.checked;
+                
+                let previewHTML = '<div class="worksheet-title">';
+                previewHTML += `<h3>${getWorksheetTitle(type)} Worksheet</h3>`;
+                previewHTML += `<p>${problemCount} problems | ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} difficulty</p>`;
+                previewHTML += '</div>';
+                
+                // Generate problems based on type
+                previewHTML += '<div class="problems">';
+                for (let i = 1; i <= Math.min(5, problemCount); i++) {
+                    previewHTML += generateProblem(type, difficulty, i);
+                }
+                
+                if (problemCount > 5) {
+                    previewHTML += `<p>... and ${problemCount - 5} more problems</p>`;
+                }
+                
+                previewHTML += '</div>';
+                
+                // Add answer key if selected
+                if (includeAnswers) {
+                    previewHTML += '<div class="answer-key">';
+                    previewHTML += '<h4>Answer Key:</h4>';
+                    previewHTML += '<p>Answers will be included at the bottom of the worksheet.</p>';
+                    previewHTML += '</div>';
+                }
+                
+                previewContent.innerHTML = previewHTML;
+            }
+            
+            // Generate a single problem
+            function generateProblem(type, difficulty, problemNumber) {
+                let problem = '';
+                
+                switch(type) {
+                    case 'numbers1-10':
+                        if (difficulty === 'easy') {
+                            const num = Math.floor(Math.random() * 10) + 1;
+                            problem = `${problemNumber}. Count the objects: ${'â˜…'.repeat(num)}`;
+                        } else if (difficulty === 'medium') {
+                            const num1 = Math.floor(Math.random() * 10) + 1;
+                            const num2 = Math.floor(Math.random() * 10) + 1;
+                            problem = `${problemNumber}. Which is bigger: ${num1} or ${num2}?`;
+                        } else {
+                            const nums = [1,2,3,4,5,6,7,8,9,10];
+                            const missing = nums[Math.floor(Math.random() * 10)];
+                            problem = `${problemNumber}. Fill in the missing number: ${nums.slice(0, missing-1).join(', ')}, __, ${nums.slice(missing).join(', ')}`;
+                        }
+                        break;
+                        
+                    case 'numbers10-100':
+                        if (difficulty === 'easy') {
+                            const num = Math.floor(Math.random() * 10) * 10 + 10;
+                            problem = `${problemNumber}. Write the number: ${num} in words`;
+                        } else if (difficulty === 'medium') {
+                            const num = Math.floor(Math.random() * 90) + 10;
+                            problem = `${problemNumber}. What comes after ${num}?`;
+                        } else {
+                            const num = Math.floor(Math.random() * 90) + 10;
+                            problem = `${problemNumber}. Round ${num} to the nearest 10`;
+                        }
+                        break;
+                        
+                    case 'skip2':
+                        const start2 = Math.floor(Math.random() * 10) * 2;
+                        problem = `${problemNumber}. Skip count by 2s: ${start2}, ${start2+2}, __, __, __`;
+                        break;
+                        
+                    case 'skip5':
+                        const start5 = Math.floor(Math.random() * 10) * 5;
+                        problem = `${problemNumber}. Skip count by 5s: ${start5}, ${start5+5}, __, __, __`;
+                        break;
+                        
+                    case 'skip10':
+                        const start10 = Math.floor(Math.random() * 10) * 10;
+                        problem = `${problemNumber}. Skip count by 10s: ${start10}, ${start10+10}, __, __, __`;
+                        break;
+                        
+                    case 'backward':
+                        const startBack = Math.floor(Math.random() * 50) + 20;
+                        problem = `${problemNumber}. Count backward: ${startBack}, ${startBack-1}, __, __, __`;
+                        break;
+                        
+                    default:
+                        problem = `${problemNumber}. Sample counting problem`;
+                }
+                
+                return `<div class="worksheet-problem">${problem}</div>`;
+            }
+            
+            // Get worksheet title
+            function getWorksheetTitle(type) {
+                const titles = {
+                    'numbers1-10': 'Numbers 1-10',
+                    'numbers10-100': 'Numbers 10-100',
+                    'skip2': 'Skip Counting by 2s',
+                    'skip5': 'Skip Counting by 5s',
+                    'skip10': 'Skip Counting by 10s',
+                    'backward': 'Backward Counting'
+                };
+                return titles[type] || 'Counting';
+            }
+            
+            // Update preview when settings change
+            problemCountSelect.addEventListener('change', function() {
+                const activeButton = document.querySelector('.generate-btn-small[data-type]');
+                if (activeButton) {
+                    generatePreview(activeButton.getAttribute('data-type'));
+                }
+            });
+            
+            difficultySelect.addEventListener('change', function() {
+                const activeButton = document.querySelector('.generate-btn-small[data-type]');
+                if (activeButton) {
+                    generatePreview(activeButton.getAttribute('data-type'));
+                }
+            });
+            
+            includeAnswersCheckbox.addEventListener('change', function() {
+                const activeButton = document.querySelector('.generate-btn-small[data-type]');
+                if (activeButton) {
+                    generatePreview(activeButton.getAttribute('data-type'));
+                }
+            });
+            
+            // Generate full worksheet
+            generateFullBtn.addEventListener('click', function() {
+                alert('Full worksheet generated! This would create a printable page with all problems.');
+                // In a real app, this would open a new page with the full worksheet
+            });
+            
+            // Print button
+            document.getElementById('printCountingBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Download PDF button
+            document.getElementById('downloadCountingBtn').addEventListener('click', function() {
+                alert('PDF download started! This would download a PDF file of the worksheet.');
+                // In a real app, this would generate and download a PDF
+            });
+            
+            // Hover effect for category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.borderTopColor = '#f72585';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.borderTopColor = '#4361ee';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

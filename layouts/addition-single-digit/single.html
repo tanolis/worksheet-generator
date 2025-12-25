@@ -1,0 +1,938 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - Worksheet Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EF476F;
+            --secondary: #118AB2;
+            --accent: #FFD166;
+            --success: #06D6A0;
+            --dark: #073B4C;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, #FFF5F7 0%, #F0F9FF 100%);
+            color: var(--dark); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), #FF8FA3);
+            color: white;
+            padding: 1.5rem 0;
+            border-bottom: 5px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(239, 71, 111, 0.2);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo h1 { 
+            font-family: 'Comic Neue', cursive; 
+            font-size: 2rem; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-links a { 
+            color: white; 
+            text-decoration: none; 
+            margin-left: 20px; 
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+        }
+        
+        /* Main Content */
+        .main-content { 
+            padding: 3rem 0; 
+        }
+        
+        .page-header {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(239, 71, 111, 0.1);
+            border: 3px dashed var(--accent);
+        }
+        
+        .page-header h1 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Generator */
+        .generator-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .generator-container { grid-template-columns: 1fr; }
+        }
+        
+        .settings-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 3px solid var(--secondary);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .setting-group { 
+            margin-bottom: 25px; 
+            padding-bottom: 20px;
+            border-bottom: 2px dotted #E0E7FF;
+        }
+        
+        .setting-group:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-group h3 { 
+            color: var(--secondary); 
+            margin-bottom: 15px; 
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: #F0F7FF;
+            border: 2px solid #E0E7FF;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s;
+            text-align: left;
+            padding-left: 15px;
+        }
+        
+        .option-btn:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        /* Worksheet Display */
+        .worksheet-display {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 3px solid var(--primary);
+            min-height: 600px;
+        }
+        
+        .worksheet-title {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 3px dotted var(--accent);
+        }
+        
+        .worksheet-title h2 {
+            font-family: 'Comic Neue', cursive;
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .worksheet-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Problems Grid - Better for printing */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .problem-item {
+            background: #FFF9F0;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #FFE5CC;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        
+        .problem-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+        
+        .problem-number {
+            background: var(--accent);
+            color: var(--dark);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .problem-type {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        /* Problem Content - Fixed horizontal alignment */
+        .horizontal-problem {
+            font-size: 2rem;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #E0E7FF;
+            position: relative;
+        }
+        
+        .horizontal-equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .horizontal-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            padding: 0 10px;
+        }
+        
+        .horizontal-operator {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .horizontal-equals {
+            font-size: 2rem;
+            margin: 0 15px;
+        }
+        
+        .horizontal-line {
+            border-top: 3px solid #333;
+            width: 120px;
+            margin: 10px auto;
+            padding-top: 15px;
+        }
+        
+        .vertical-problem {
+            font-size: 2.2rem;
+            text-align: center;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #E0E7FF;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .vertical-problem .top-number {
+            margin-bottom: 5px;
+        }
+        
+        .vertical-problem .plus-line {
+            border-top: 3px solid var(--dark);
+            padding-top: 10px;
+            margin-top: 5px;
+            width: 80px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        
+        .vertical-problem .plus-sign {
+            position: absolute;
+            left: -25px;
+            top: -15px;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .word-problem {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #E0E7FF;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .word-problem .emoji {
+            font-size: 1.8rem;
+            margin: 0 5px;
+        }
+        
+        .word-problem-answer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dotted #ccc;
+            font-size: 1.8rem;
+        }
+        
+        /* Answer Key */
+        #answerKey {
+            margin-top: 40px; 
+            padding: 25px; 
+            background: #E8F7F6; 
+            border-radius: 12px; 
+            border: 3px solid var(--secondary);
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        
+        #answerKey h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .answer-item {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            min-width: 220px;
+            justify-content: center;
+        }
+        
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .generate-btn { 
+            background: linear-gradient(135deg, var(--primary), #FF8FA3);
+            color: white; 
+            box-shadow: 0 6px 0 #D43F63;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 0 #D43F63;
+        }
+        
+        .print-btn { 
+            background: linear-gradient(135deg, var(--secondary), #1CA6D6);
+            color: white; 
+            box-shadow: 0 6px 0 #0E7EA8;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 0 #0E7EA8;
+        }
+        
+        .back-btn { 
+            background: linear-gradient(135deg, var(--dark), #1A536B);
+            color: white; 
+            box-shadow: 0 6px 0 #052837;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 0 #052837;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 5px solid var(--accent);
+        }
+        
+        .footer-content {
+            text-align: center;
+        }
+        
+        /* ========== PRINT STYLES ========== */
+        @media print {
+            /* Hide non-printable elements */
+            .no-print { 
+                display: none !important; 
+            }
+            
+            /* Reset body for print */
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt !important;
+                line-height: 1.5 !important;
+            }
+            
+            /* Container for print */
+            .container {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* Worksheet display for print */
+            .worksheet-display {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0.5in !important;
+                background: white !important;
+                min-height: auto !important;
+            }
+            
+            /* Problems grid - 2 columns for print */
+            .problems-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px !important;
+                margin-top: 20px !important;
+            }
+            
+            /* Problem items - better print formatting */
+            .problem-item {
+                border: 2px solid #ddd !important;
+                box-shadow: none !important;
+                background: white !important;
+                padding: 15px !important;
+                margin-bottom: 20px !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                break-after: auto !important;
+                position: relative;
+                min-height: 200px;
+            }
+            
+            /* Ensure problems don't break across pages badly */
+            .problem-item::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            
+            /* Problem numbers for print */
+            .problem-number {
+                background: #f0f0f0 !important;
+                color: black !important;
+                border: 1px solid #ccc !important;
+            }
+            
+            /* Horizontal problems in print */
+            .horizontal-problem {
+                border: 1px solid #eee !important;
+                padding: 10px !important;
+                font-size: 1.8rem !important;
+            }
+            
+            .horizontal-equation {
+                gap: 10px !important;
+            }
+            
+            .horizontal-line {
+                width: 100px !important;
+                margin: 5px auto !important;
+            }
+            
+            /* Vertical problems in print */
+            .vertical-problem {
+                border: 1px solid #eee !important;
+                padding: 15px !important;
+                font-size: 1.8rem !important;
+            }
+            
+            /* Word problems in print - better formatting */
+            .word-problem {
+                border: 1px solid #eee !important;
+                padding: 15px !important;
+                font-size: 1.1rem !important;
+                min-height: 180px !important;
+            }
+            
+            .word-problem-answer {
+                font-size: 1.5rem !important;
+                margin-top: 10px !important;
+            }
+            
+            /* Answer key for print */
+            #answerKey {
+                border: 2px solid #333 !important;
+                margin-top: 30px !important;
+                page-break-before: avoid !important;
+                page-break-inside: avoid !important;
+            }
+            
+            /* Page break control */
+            @page {
+                margin: 0.5in;
+                size: letter;
+            }
+            
+            /* Avoid breaking inside critical elements */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+            }
+            
+            .worksheet-title {
+                page-break-after: avoid;
+                border-bottom: 2px solid #ccc !important;
+                margin-bottom: 20px !important;
+            }
+            
+            /* Add page borders that won't break */
+            .worksheet-display {
+                position: relative;
+            }
+            
+            .worksheet-display::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border: 2px solid #333;
+                pointer-events: none;
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Screen-only improvements */
+        @media screen and (max-width: 768px) {
+            .problems-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="no-print">
+        <div class="container header-container">
+            <div class="logo">
+                <h1><i class="fas fa-plus-circle"></i> Single Digit Addition</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/numbers-1-10/">🔢 Counting</a>
+                <a href="/addition-two-digit/">➕ Two Digit</a>
+                <a href="/subtraction-single-digit/">➖ Subtraction</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header no-print">
+                <h1><i class="fas fa-calculator"></i> Single Digit Addition Generator</h1>
+                <p>Create custom addition worksheets with numbers 0-9. Choose from horizontal, vertical, or word problems!</p>
+            </div>
+
+            <div class="generator-container">
+                <div class="settings-panel no-print">
+                    <h2><i class="fas fa-sliders-h"></i> Worksheet Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-list-ol"></i> Number of Problems</h3>
+                        <button class="option-btn active" onclick="setProblems(10)">10 Problems</button>
+                        <button class="option-btn" onclick="setProblems(15)">15 Problems</button>
+                        <button class="option-btn" onclick="setProblems(20)">20 Problems</button>
+                        <button class="option-btn" onclick="setProblems(25)">25 Problems</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-chart-line"></i> Difficulty Level</h3>
+                        <button class="option-btn active" onclick="setDifficulty('easy')">Easy (0-5)</button>
+                        <button class="option-btn" onclick="setDifficulty('medium')">Medium (0-9)</button>
+                        <button class="option-btn" onclick="setDifficulty('hard')">Hard (Mixed)</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-th-large"></i> Problem Type</h3>
+                        <button class="option-btn active" onclick="setType('horizontal')">Horizontal</button>
+                        <button class="option-btn" onclick="setType('vertical')">Vertical</button>
+                        <button class="option-btn" onclick="setType('word')">Word Problems</button>
+                        <button class="option-btn" onclick="setType('mixed')">Mixed Types</button>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3><i class="fas fa-check-circle"></i> Options</h3>
+                        <label style="display:block; margin:15px 0; padding:10px; background:#F8F9FF; border-radius:8px;">
+                            <input type="checkbox" id="includeAnswers" checked style="margin-right:10px;">
+                            Include Answer Key
+                        </label>
+                        <label style="display:block; margin:15px 0; padding:10px; background:#F8F9FF; border-radius:8px;">
+                            <input type="checkbox" id="showHelpers" checked style="margin-right:10px;">
+                            Show Visual Helpers
+                        </label>
+                    </div>
+                </div>
+
+                <div class="worksheet-display">
+                    <div class="worksheet-title">
+                        <h2>Single Digit Addition Practice</h2>
+                        <p>Name: __________________ Date: _______________ Score: ___ / ___</p>
+                    </div>
+                    
+                    <div class="problems-grid" id="problemsContainer">
+                        <!-- Problems will be generated here -->
+                    </div>
+                    
+                    <div id="answerKey" style="display:none;">
+                        <h3><i class="fas fa-key"></i> Answer Key</h3>
+                        <div class="answers-grid" id="answersContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons no-print">
+                <button class="action-btn generate-btn" onclick="generateWorksheet()">
+                    <i class="fas fa-magic"></i> Generate New Worksheet
+                </button>
+                <button class="action-btn print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Worksheet
+                </button>
+                <a href="/" class="action-btn back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="no-print">
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2023 Worksheet Generator - Making Math Fun for Kids!</p>
+                <p style="margin-top:10px; font-size:0.9rem; opacity:0.8;">
+                    Perfect for kindergarten, 1st grade, and 2nd grade students
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let settings = {
+            problems: 10,
+            difficulty: 'easy',
+            type: 'horizontal',
+            includeAnswers: true,
+            showHelpers: true
+        };
+        
+        function setProblems(num) {
+            document.querySelectorAll('[onclick^="setProblems"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.problems = num;
+            generateWorksheet();
+        }
+        
+        function setDifficulty(level) {
+            document.querySelectorAll('[onclick^="setDifficulty"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.difficulty = level;
+            generateWorksheet();
+        }
+        
+        function setType(type) {
+            document.querySelectorAll('[onclick^="setType"]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            settings.type = type;
+            generateWorksheet();
+        }
+        
+        function generateWorksheet() {
+            const container = document.getElementById('problemsContainer');
+            const answerContainer = document.getElementById('answersContainer');
+            const answerKey = document.getElementById('answerKey');
+            
+            container.innerHTML = '';
+            answerContainer.innerHTML = '';
+            
+            // Update options
+            settings.includeAnswers = document.getElementById('includeAnswers').checked;
+            settings.showHelpers = document.getElementById('showHelpers').checked;
+            
+            // Problem type array for mixed mode
+            const problemTypes = ['horizontal', 'vertical', 'word'];
+            
+            // Generate problems
+            for (let i = 1; i <= settings.problems; i++) {
+                let num1, num2;
+                
+                // Set numbers based on difficulty
+                switch(settings.difficulty) {
+                    case 'easy':
+                        num1 = Math.floor(Math.random() * 6);
+                        num2 = Math.floor(Math.random() * 6);
+                        break;
+                    case 'medium':
+                        num1 = Math.floor(Math.random() * 10);
+                        num2 = Math.floor(Math.random() * 10);
+                        break;
+                    case 'hard':
+                        num1 = Math.floor(Math.random() * 10);
+                        num2 = Math.floor(Math.random() * (10 - num1));
+                        break;
+                }
+                
+                const sum = num1 + num2;
+                
+                // Determine problem type
+                let currentType = settings.type;
+                if (settings.type === 'mixed') {
+                    currentType = problemTypes[Math.floor(Math.random() * problemTypes.length)];
+                }
+                
+                // Generate problem HTML based on type
+                let problemHTML = '';
+                let typeLabel = '';
+                
+                switch(currentType) {
+                    case 'horizontal':
+                        typeLabel = 'Horizontal Addition';
+                        problemHTML = `
+                            <div class="horizontal-problem">
+                                <div style="text-align:left; margin-bottom:10px; font-size:1rem; color:#666;">
+                                    Problem ${i}
+                                </div>
+                                <div class="horizontal-equation">
+                                    <div class="horizontal-number">${num1}</div>
+                                    <div class="horizontal-operator">+</div>
+                                    <div class="horizontal-number">${num2}</div>
+                                    <div class="horizontal-equals">=</div>
+                                </div>
+                                <div class="horizontal-line"></div>
+                                ${settings.showHelpers ? 
+                                    `<div style="margin-top:15px; font-size:1.2rem; color:#888;">
+                                        Count: ${'•'.repeat(num1)} + ${'•'.repeat(num2)}
+                                    </div>` : ''
+                                }
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'vertical':
+                        typeLabel = 'Vertical Addition';
+                        problemHTML = `
+                            <div class="vertical-problem">
+                                <div style="text-align:left; margin-bottom:10px; font-size:1rem; color:#666;">
+                                    Problem ${i}
+                                </div>
+                                <div style="text-align:right; width:100px; margin:0 auto; position:relative;">
+                                    <div class="top-number">${num1}</div>
+                                    <div style="position:relative;">
+                                        <span class="plus-sign">+</span>
+                                        <span style="margin-left:20px;">${num2}</span>
+                                    </div>
+                                    <div class="plus-line"></div>
+                                    <div style="margin-top:10px; font-size:1.5rem;">______</div>
+                                </div>
+                                ${settings.showHelpers ? 
+                                    `<div style="margin-top:15px; font-size:1rem; color:#888;">
+                                        Total: ${num1 + num2}
+                                    </div>` : ''
+                                }
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'word':
+                        typeLabel = 'Word Problem';
+                        const objects = [
+                            {emoji: '🍎', item: 'apples'},
+                            {emoji: '🐱', item: 'cats'}, 
+                            {emoji: '🎈', item: 'balloons'},
+                            {emoji: '🚗', item: 'cars'},
+                            {emoji: '🌟', item: 'stars'},
+                            {emoji: '📚', item: 'books'},
+                            {emoji: '✏️', item: 'pencils'},
+                            {emoji: '🎨', item: 'crayons'}
+                        ];
+                        const obj = objects[Math.floor(Math.random() * objects.length)];
+                        
+                        problemHTML = `
+                            <div class="word-problem">
+                                <div style="text-align:left; margin-bottom:15px; font-size:1rem; color:#666;">
+                                    Problem ${i}
+                                </div>
+                                <div style="flex-grow:1;">
+                                    <p>You have ${num1} ${obj.emoji}. You get ${num2} more ${obj.emoji}.</p>
+                                    <p>How many ${obj.item} do you have in total?</p>
+                                </div>
+                                <div class="word-problem-answer">
+                                    ______ ${obj.item}
+                                </div>
+                                ${settings.showHelpers ? 
+                                    `<div style="margin-top:15px; font-size:1.1rem; color:#888; padding:8px; background:#FFF9F0; border-radius:5px;">
+                                        ${obj.emoji.repeat(num1)} + ${obj.emoji.repeat(num2)}
+                                    </div>` : ''
+                                }
+                            </div>
+                        `;
+                        break;
+                }
+                
+                // Create problem item
+                container.innerHTML += `
+                    <div class="problem-item">
+                        <div class="problem-header">
+                            <div class="problem-number">${i}</div>
+                            <div class="problem-type">${typeLabel}</div>
+                        </div>
+                        ${problemHTML}
+                    </div>
+                `;
+                
+                // Add to answer key
+                if (settings.includeAnswers) {
+                    answerContainer.innerHTML += `
+                        <div class="answer-item">
+                            ${i}. ${num1} + ${num2} = <strong style="color:var(--primary);">${sum}</strong>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Show/hide answer key
+            answerKey.style.display = settings.includeAnswers ? 'block' : 'none';
+            
+            // Show success message
+            if (!window.printing) {
+                setTimeout(() => {
+                    alert(`✅ Generated ${settings.problems} addition problems!\n\nPrint Preview Tips:\n• Use "Print Preview" before printing\n• Select "Fit to page" in printer settings\n• Use high-quality paper for best results`);
+                }, 100);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', generateWorksheet);
+        
+        // Update on checkbox change
+        document.getElementById('includeAnswers').addEventListener('change', generateWorksheet);
+        document.getElementById('showHelpers').addEventListener('change', generateWorksheet);
+        
+        // Add print event listener for better print handling
+        window.onbeforeprint = function() {
+            window.printing = true;
+            // Add print-specific classes if needed
+            document.body.classList.add('printing');
+        };
+        
+        window.onafterprint = function() {
+            window.printing = false;
+            document.body.classList.remove('printing');
+        };
+        
+        // Add keyboard shortcut (Ctrl+G to generate)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'g') {
+                e.preventDefault();
+                generateWorksheet();
+            }
+        });
+    </script>
+</body>
+</html>

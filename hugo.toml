@@ -1,0 +1,9 @@
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "Worksheet Generator"
+#theme = "none"  # Important: We're not using a theme
+
+# Add this if not present:
+[outputs]
+  home = ["HTML"]
+  page = ["HTML"]

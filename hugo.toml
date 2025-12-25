@@ -1,10 +1,16 @@
-baseURL = "https://tanolis.github.io/worksheet-generator/public/"
+baseURL = "https://tanolis.github.io/worksheet-generator/"
 languageCode = "en-us"
 title = "Worksheet Generator"
-# theme = "none"
+
+# IMPORTANT: This tells Hugo to build directly to root
+publishDir = "docs"
 
 [outputs]
   home = ["HTML"]
   page = ["HTML"]
 
-publishDir = "docs"
+# This helps with GitHub Pages
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
